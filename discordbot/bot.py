@@ -86,11 +86,15 @@ async def msg_bahasa_counter(message):
     if username not in users.keys():
         users[username] = {}
 
+    if username == "@aabeds":
+        await message.channel.send("Ni T20 :)")
+
     if message.author.name not in users[username].keys():
-        users[username][message.author.name] = 0
+        users[username][message.author.name] = 1
     else:
         users[username][message.author.name] += 1
 
+    if users[username][message.author.name]:
         nad_cnt = users[username].get("Nad") or 0
 
         output_msg = (
