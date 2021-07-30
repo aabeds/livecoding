@@ -83,11 +83,11 @@ async def on_message(message):
 
 async def msg_bahasa_counter(message):
     username = message.content.split(" ")[1]
+    print(username)
     if username not in users.keys():
         users[username] = {}
 
     if username == "@aabeds":
-        print(username)
         await message.channel.send("Ni T20 :)")
 
     if message.author.name not in users[username].keys():
