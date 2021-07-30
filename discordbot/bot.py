@@ -74,9 +74,10 @@ async def on_message(message):
         await msg_price_summary(message)
 
     elif message_content.startswith("$bahasa"):
-        if message.content.split(" ")[1] == "reset":
+        message_content_1 = message.content.split(" ")[1]
+        if message_content == "reset":
             await msg_bahasa_reset(message)
-        else:
+        elif message_content_1[0] == "@":
             await msg_bahasa_counter(message)
 
 
@@ -84,18 +85,21 @@ async def msg_bahasa_counter(message):
     username = message.content.split(" ")[1]
     if username not in users.keys():
         users[username] = {}
-        users[username][message.author.name] = 1
+
+    if message.author.name not in users[username].keys():
+        users[username][message.author.name] = 0
     else:
         users[username][message.author.name] += 1
 
-    nad_cnt = users[username].get("Nad") or 0
+        nad_cnt = users[username].get("Nad") or 0
 
-    output_msg = (
-        f"{username}'s total points :{sum(users[username].values())}. "
-        f"{message.author.name} reported {users[username][message.author.name]}. time(s). "
-        f"Nad reported {nad_cnt}. time(s)"
-    )
-    await message.channel.send(output_msg)
+        output_msg = (
+            f"{username}'s total points : {sum(users[username].values())}. "
+            f"{message.author.name} reported {users[username][message.author.name]} time(s). "
+            f"Nad reported {nad_cnt} time(s)"
+        )
+        await message.channel.send(output_msg)
+
 
 async def msg_bahasa_reset(message):
     global users
@@ -104,6 +108,7 @@ async def msg_bahasa_reset(message):
         await message.channel.send("Resetted counter")
     else:
         await message.channel.send(f"User {message.author.name} doesn't have the permission to reset counter")
+
 
 async def msg_price_summary(message):
     ticker = message.content.split(" ")[1]
