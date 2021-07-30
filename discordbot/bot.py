@@ -77,7 +77,7 @@ async def on_message(message):
         message_content_1 = message.content.split(" ")[1]
         if message_content == "reset":
             await msg_bahasa_reset(message)
-        elif message_content_1[0] == "@":
+        else:
             await msg_bahasa_counter(message)
 
 
@@ -86,9 +86,6 @@ async def msg_bahasa_counter(message):
     print(username)
     if username not in users.keys():
         users[username] = {}
-
-    if username == "@aabeds":
-        await message.channel.send("Ni T20 :)")
 
     if message.author.name not in users[username].keys():
         users[username][message.author.name] = 1
