@@ -8,7 +8,7 @@ RAPIDAPI_KEY = ""
 RAPIDAPI_HOST = ""
 
 
-class YfRequest():
+class YfRequest:
     headers = {
         'x-rapidapi-key': RAPIDAPI_KEY,
         'x-rapidapi-host': RAPIDAPI_HOST
@@ -74,6 +74,8 @@ async def on_message(message):
         await msg_price_summary(message)
 
     elif message_content.startswith("$bahasa"):
+        if message.content.split(" ")[1] == "reset":
+            await msg_bahasa_reset(message)
         await msg_bahasa_counter(message)
 
 
@@ -84,11 +86,21 @@ async def msg_bahasa_counter(message):
         users[username][message.author.name] = 1
     else:
         users[username][message.author.name] += 1
+
+    nad_cnt = users[username].get("Nad") or 0
+
     output_msg = (
         f"{username}'s total points :{sum(users[username].values())}. "
         f"{message.author.name} reported {users[username][message.author.name]}"
+        f"Nad reported {nad_cnt}. times"
     )
     await message.channel.send(output_msg)
+
+async def msg_bahasa_reset(message):
+    global users
+
+    users = {}
+    await message.channel.send("Resetted counter")
 
 
 async def msg_price_summary(message):

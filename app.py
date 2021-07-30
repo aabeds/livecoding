@@ -2,5 +2,5 @@ import os
 
 from discordbot.bot import client
 
-token = os.environ["DISCORD_TOKEN"]
+token = "ODYwMjMyNzQwNjcwMDEzNDkx.YN4QKw.5E2FyZyLMAxGRurSZph9cVqtFnA"
 client.run(token)
