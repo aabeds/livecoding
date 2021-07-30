@@ -91,17 +91,18 @@ async def msg_bahasa_counter(message):
 
     output_msg = (
         f"{username}'s total points :{sum(users[username].values())}. "
-        f"{message.author.name} reported {users[username][message.author.name]}"
-        f"Nad reported {nad_cnt}. times"
+        f"{message.author.name} reported {users[username][message.author.name]}. time(s). "
+        f"Nad reported {nad_cnt}. time(s)"
     )
     await message.channel.send(output_msg)
 
 async def msg_bahasa_reset(message):
     global users
-
-    users = {}
-    await message.channel.send("Resetted counter")
-
+    if message.author.name in ["aabeds", "Majujur", "kimimccaw", "pikliwoah"]:
+        users = {}
+        await message.channel.send("Resetted counter")
+    else:
+        await message.channel.send(f"User {message.author.name} doesn't have the permission to reset counter")
 
 async def msg_price_summary(message):
     ticker = message.content.split(" ")[1]
