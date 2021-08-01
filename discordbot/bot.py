@@ -35,7 +35,7 @@ async def on_message(message):
 
     elif message_content.startswith("$bahasa"):
         message_content_1 = message.content.split(" ")[1]
-        if message_content == "reset":
+        if message_content_1 == "reset":
             await msg_bahasa_reset(message)
         else:
             await msg_bahasa_counter(message)
