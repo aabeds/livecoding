@@ -27,12 +27,10 @@ def read_json_file(filepath):
     return data
 
 
-def update_json_file():
+def update_json_file(path):
     if not os.path.exists(path):
         create_new_json_file(path)
 
-    data = read_json_file()
+    data = read_json_file(path)
     write_json_file(data)
 
-create_new_json_file(path)
-update_json_file()
