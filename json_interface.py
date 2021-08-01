@@ -3,21 +3,14 @@ import os
 
 from pathlib import Path
 
-path = Path("data.json")
-
 
 def create_new_json_file(filepath):
     with open(filepath, 'w') as file:
         json.dump({}, file)
 
 
-if not os.path.exists(path):
-    print("file not exists")
-    create_new_json_file(path)
-
-
-def write_json_file(data):
-    with open(path, "w") as jsonFile:
+def write_json_file(filepath, data):
+    with open(filepath, "w") as jsonFile:
         json.dump(data, jsonFile)
 
 
@@ -33,4 +26,3 @@ def update_json_file(path):
 
     data = read_json_file(path)
     write_json_file(data)
-
