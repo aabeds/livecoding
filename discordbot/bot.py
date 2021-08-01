@@ -1,58 +1,18 @@
 import json
 import os
 import discord
-import requests
 
-YF_BASE_URL = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/"
-RAPIDAPI_KEY = ""
-RAPIDAPI_HOST = ""
-
-
-class YfRequest:
-    headers = {
-        'x-rapidapi-key': RAPIDAPI_KEY,
-        'x-rapidapi-host': RAPIDAPI_HOST
-    }
-
-    def get_request(self, query_str: str, **kwargs):
-        region = kwargs.get("region") or "US"
-
-        url = YF_BASE_URL + "auto-complete"
-
-        querystring = {
-            "q": query_str,
-            "region": region
-        }
-
-        response = requests.request("GET", url, headers=self.headers, params=querystring)
-
-        return response
-
-    def get_symbol_summary(self, symbol: str, **kwargs):
-        url = YF_BASE_URL + "stock/v2/get-summary"
-        region = kwargs.get("region") or "US"
-
-        querystring = {"symbol": symbol, "region": region}
-
-        response = requests.request("GET", url, headers=self.headers, params=querystring)
-
-        return response
-
-    def get_price(self, symbol):
-        summary = self.get_symbol_summary(symbol)
-        summary_json = json.loads(summary.text)
-
-        symbol_price = summary_json.get("price")
-
-        symbol_price_raw = symbol_price.get("regularMarketOpen").get("raw")
-        print(symbol_price)
-        return symbol_price_raw
-
+from pathlib import Path
+from discordbot.yahoofinance import YfRequest
+from json_interface import create_new_json_file, read_json_file, write_json_file
 
 client = discord.Client()
 yf = YfRequest()
 
-users = {}
+json_path = Path("data.json")
+
+if not os.path.exists(json_path):
+    create_new_json_file(json_path)
 
 
 @client.event
@@ -83,13 +43,16 @@ async def on_message(message):
 
 async def msg_bahasa_counter(message):
     username = message.content.split(" ")[1]
-    print(username)
+
+    users = read_json_file(json_path)
     if username not in users.keys():
         users[username] = {}
 
     if message.author.name not in users[username].keys():
+        print("Author not yet registered in Json")
         users[username][message.author.name] = 1
     else:
+        print("Author's counter +1")
         users[username][message.author.name] += 1
 
     if users[username][message.author.name]:
@@ -100,13 +63,15 @@ async def msg_bahasa_counter(message):
             f"{message.author.name} reported {users[username][message.author.name]} time(s). "
             f"Nad reported {nad_cnt} time(s)"
         )
+        write_json_file(users)
         await message.channel.send(output_msg)
+    else:
+        print("Exception?")
 
 
 async def msg_bahasa_reset(message):
-    global users
     if message.author.name in ["aabeds", "Majujur", "kimimccaw", "pikliwoah"]:
-        users = {}
+        create_new_json_file(json_path)
         await message.channel.send("Resetted counter")
     else:
         await message.channel.send(f"User {message.author.name} doesn't have the permission to reset counter")
