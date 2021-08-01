@@ -72,7 +72,7 @@ async def msg_bahasa_counter(message: Message):
         output_msg = (
             f"{username}'s total points : {sum(users[username].values())}. "
             f"{message.author.name} reported {users[username][message.author.name]} time(s). "
-            f"Nad reported {nad_cnt} time(s)"
+            f"CCO Nad reported {nad_cnt} time(s)"
         )
         write_json_file(json_path, users)
         await message.channel.send(output_msg)
@@ -81,11 +81,11 @@ async def msg_bahasa_counter(message: Message):
 
 
 async def msg_bahasa_reset(message: Message):
-    if message.author.name in ["aabeds", "Majujur", "kimimccaw", "pikliwoah"]:
+    if message.author.name.lower() in ["aabeds", "majujur", "kimimccaw", "pikliwoah"]:
         create_new_json_file(json_path)
-        await message.channel.send("Resetted counter")
+        await message.channel.send("Kosong-Kosong balik")
     else:
-        await message.channel.send(f"User {message.author.name} doesn't have the permission to reset counter")
+        await message.channel.send(f"Nice try ;) {message.author.name} cuba lagi yer!")
 
 
 async def msg_price_summary(message: Message):
