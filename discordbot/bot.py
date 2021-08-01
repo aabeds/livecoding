@@ -40,6 +40,7 @@ async def on_message(message: Message):
 
     elif message_content_arr[0] == "$bahasa":
         print("Mentioned Users:", message.mentions)
+        print("Mentioned Users (raw):", message.raw_mentions())
         try:
             message_content_1 = message_content_arr[1]
             if message_content_1 == "reset":
