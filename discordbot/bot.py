@@ -73,7 +73,7 @@ async def msg_bahasa_counter(message: Message):
             f"{message.author.name} reported {users[username][message.author.name]} time(s). "
             f"Nad reported {nad_cnt} time(s)"
         )
-        write_json_file(users)
+        write_json_file(json_path, users)
         await message.channel.send(output_msg)
     else:
         print("Exception?")
