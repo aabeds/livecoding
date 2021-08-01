@@ -26,20 +26,23 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    message_content: str = message.content
+    message_content: str = message.content#
+    message_content_arr = message.content.split(" ")[1]
     if message_content.startswith("$price"):
         await msg_price(message)
 
     elif message_content.startswith("$summary"):
         await msg_price_summary(message)
 
-    elif message_content.startswith("$bahasa"):
-        message_content_1 = message.content.split(" ")[1]
-        if message_content_1 == "reset":
-            await msg_bahasa_reset(message)
-        else:
-            await msg_bahasa_counter(message)
-
+    elif message_content_arr[0] == "$bahasa":
+        try:
+            message_content_1 = message_content_arr[1]
+            if message_content_1 == "reset":
+                await msg_bahasa_reset(message)
+            else:
+                await msg_bahasa_counter(message)
+        except Exception as e:
+            await message.channel.send("Error in command")
 
 async def msg_bahasa_counter(message):
     username = message.content.split(" ")[1]
