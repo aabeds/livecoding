@@ -30,7 +30,7 @@ async def on_message(message: Message):
         return
 
     message_content: str = message.content  #
-    message_content_arr = message.content.split(" ")[1]
+    message_content_arr = message.content.split(" ")
     print("All message contents:", message_content_arr)
     if message_content.startswith("$price"):
         await msg_price(message)
