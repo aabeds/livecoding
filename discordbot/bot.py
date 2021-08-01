@@ -3,6 +3,9 @@ import os
 import discord
 
 from pathlib import Path
+
+from discord import Message
+
 from discordbot.yahoofinance import YfRequest
 from json_interface import create_new_json_file, read_json_file, write_json_file
 
@@ -21,12 +24,12 @@ async def on_ready():
 
 
 @client.event
-async def on_message(message):
+async def on_message(message: Message):
     print("Message read:", message.content)
     if message.author == client.user:
         return
 
-    message_content: str = message.content#
+    message_content: str = message.content  #
     message_content_arr = message.content.split(" ")[1]
     if message_content.startswith("$price"):
         await msg_price(message)
@@ -35,6 +38,7 @@ async def on_message(message):
         await msg_price_summary(message)
 
     elif message_content_arr[0] == "$bahasa":
+        print("Mentioned Users:", message.mentions)
         try:
             message_content_1 = message_content_arr[1]
             if message_content_1 == "reset":
@@ -44,7 +48,8 @@ async def on_message(message):
         except Exception as e:
             await message.channel.send("Error in command")
 
-async def msg_bahasa_counter(message):
+
+async def msg_bahasa_counter(message: Message):
     username = message.content.split(" ")[1]
 
     users = read_json_file(json_path)
@@ -72,7 +77,7 @@ async def msg_bahasa_counter(message):
         print("Exception?")
 
 
-async def msg_bahasa_reset(message):
+async def msg_bahasa_reset(message: Message):
     if message.author.name in ["aabeds", "Majujur", "kimimccaw", "pikliwoah"]:
         create_new_json_file(json_path)
         await message.channel.send("Resetted counter")
@@ -80,14 +85,14 @@ async def msg_bahasa_reset(message):
         await message.channel.send(f"User {message.author.name} doesn't have the permission to reset counter")
 
 
-async def msg_price_summary(message):
+async def msg_price_summary(message: Message):
     ticker = message.content.split(" ")[1]
     summary = yf.get_symbol_summary(ticker)
     print("Ticker:", ticker)
     await message.channel.send(f"{ticker} summary: {summary.text[:400]}")
 
 
-async def msg_price(message):
+async def msg_price(message: Message):
     ticker = message.content.split(" ")[1]
     price = yf.get_price(ticker)
     print("Ticker:", ticker)
