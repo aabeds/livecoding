@@ -2,8 +2,8 @@ import requests
 import json
 
 YF_BASE_URL = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/"
-RAPIDAPI_KEY = ""
-RAPIDAPI_HOST = ""
+RAPIDAPI_KEY = os.environ['YF_RAPIDAPI_KEY']
+RAPIDAPI_HOST = os.environ['YF_RAPIDAPI_HOST']
 
 
 class YfRequest:
