@@ -1,5 +1,6 @@
 import requests
 import json
+import os 
 
 YF_BASE_URL = "https://apidojo-yahoo-finance-v1.p.rapidapi.com/"
 RAPIDAPI_KEY = os.environ['YF_RAPIDAPI_KEY']
